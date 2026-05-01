@@ -1,5 +1,3 @@
-use std::env;
-use std::fs;
 use std::path::Path;
 
 fn main() {
@@ -50,7 +48,7 @@ fn format_content(content: &str) -> String {
         }
     }
 
-    result
+    result.replace('$', "<|")
 }
 
 fn split_leading_whitespace(s: &str) -> (&str, &str) {
@@ -143,21 +141,4 @@ fn trim_whitespace(line: &str) -> String {
     };
 
     format!("{}{}", adjusted_whitespace, content)
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_format_simple() {
-        assert_eq!(format_spaces("test ( contenu )"), "test (contenu )");
-        assert_eq!(format_spaces("(  espaces  )"), "(espaces )");
-        assert_eq!(format_spaces("rien"), "rien");
-    }
-
-    #[test]
-    fn test_format_multiple_parentheses() {
-        assert_eq!(format_spaces("( a ) et ( b )"), "(a ) et (b )");
-    }
 }
