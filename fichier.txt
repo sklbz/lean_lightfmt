@@ -1,5 +1,8 @@
 Hello world!
 
-	( Bonjour)
+
+  ( Bonjour)
 (Tout )
 (  le monde  )
+ hello                       world!
+example {k : ℤ} (hk : 0 < (k : ℤ) ) : 0 ≤ k - 1 := by

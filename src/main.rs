@@ -1,9 +1,11 @@
 use std::path::Path;
+use std::process::exit;
+use std::{env, fs};
 
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    if args.len() <= 1 {
+    if args.len() <= 2 {
         return;
     }
 
@@ -11,26 +13,30 @@ fn main() {
 
     let path = Path::new(file_path);
     if !path.exists() {
-        eprintln!("Erreur: Le fichier '{}' n'existe pas.", file_path);
-        std::process::exit(1);
+        eprintln!("ERROR: The file '{}' does not exist.", file_path);
+        exit(1);
     }
 
     if !path.is_file() {
-        eprintln!("Erreur: '{}' n'est pas un fichier.", file_path);
-        std::process::exit(1);
+        eprintln!("ERROR: '{}' is not a file.", file_path);
+        exit(1);
     }
 
     let content = match fs::read_to_string(file_path) {
         Ok(text) => text,
         Err(e) => {
-            eprintln!("Erreur lors de la lecture du fichier: {}", e);
-            std::process::exit(1);
+            eprintln!("ERROR: {}", e);
+            exit(1);
         }
     };
 
     let formatted = format_content(&content);
 
-    print!("{}", formatted);
+    let action = &args[2];
+
+    if action == "--print" {
+        print!("{}", formatted);
+    }
 }
 
 fn format_content(content: &str) -> String {
@@ -132,12 +138,10 @@ fn trim_whitespace(line: &str) -> String {
 
     let (whitespace, content) = split_leading_whitespace(trimmed_end);
 
-    let adjusted_whitespace = if whitespace.len() % 2 == 1 {
-        let mut chars: Vec<char> = whitespace.chars().collect();
-        chars.pop();
-        chars.into_iter().collect()
+    let adjusted_whitespace = if whitespace.len() % 2 == 1 && !whitespace.is_empty() {
+        &whitespace[0..whitespace.len() - 1]
     } else {
-        whitespace.to_string()
+        whitespace
     };
 
     format!("{}{}", adjusted_whitespace, content)

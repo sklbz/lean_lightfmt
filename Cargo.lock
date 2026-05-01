@@ -3,5 +3,5 @@
 version = 4
 
 [[package]]
-name = "leanfmt"
+name = "lean_lightfmt"
 version = "0.1.0"
