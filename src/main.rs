@@ -138,6 +138,20 @@ fn format_spaces(line: &str) -> String {
                     }
                 }
             }
+            '→' => {
+                while result.ends_with(' ') {
+                    result.pop();
+                }
+                result.push(' ');
+                while let Some(&next) = chars.peek() {
+                    if next == ' ' {
+                        chars.next();
+                    } else {
+                        space_needed = true;
+                        break;
+                    }
+                }
+            }
             _ => (),
         };
         result.push(c)
