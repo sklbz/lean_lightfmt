@@ -34,8 +34,21 @@ fn main() {
 
     let action = &args[2];
 
-    if action == "--print" {
+    if action == "--stdout" {
         print!("{}", formatted);
+    }
+
+    if action == "--write" {
+        match fs::write(file_path, formatted) {
+            Ok(_) => {
+                println!("Succesfull!");
+                exit(0);
+            }
+            Err(e) => {
+                eprintln!("ERROR: {}", e);
+                exit(1);
+            }
+        }
     }
 }
 
